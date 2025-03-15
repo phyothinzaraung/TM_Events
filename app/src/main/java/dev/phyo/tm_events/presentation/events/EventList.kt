@@ -9,7 +9,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -24,7 +23,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import dev.phyo.tm_events.data.model.Event
@@ -35,6 +33,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
 
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
+    var isRefreshing by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -78,33 +77,50 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
             )
         }
     ) { innerPadding ->
-        LazyColumn(modifier = modifier
-            .fillMaxSize()
-            .padding(innerPadding)) {
-            items(eventList.itemCount) { index ->
-                val event = eventList[index]
-                if (event != null &&
-                    (searchQuery.isEmpty() || event.name.contains(searchQuery, ignoreCase = true) ||
-                            event.embedded.venues[0].name.contains(searchQuery, ignoreCase = true))) {
-                    EventItem(event)
-                }
+        PullToRefreshBox(
+            isRefreshing = isRefreshing,
+            onRefresh = {
+                isRefreshing = true
+                eventList.refresh()
+                isRefreshing = false
             }
+        ) {
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                items(eventList.itemCount) { index ->
+                    val event = eventList[index]
+                    if (event != null &&
+                        (searchQuery.isEmpty() || event.name.contains(
+                            searchQuery,
+                            ignoreCase = true
+                        ) ||
+                                event.embedded.venues[0].name.contains(
+                                    searchQuery,
+                                    ignoreCase = true
+                                ))
+                    ) {
+                        EventItem(event)
+                    }
+                }
 
-            eventList.apply {
-                when{
-                    loadState.refresh is LoadState.Loading -> {
-                        item { CircularProgressIndicator(modifier = Modifier.fillMaxWidth()) }
-                    }
-                    loadState.append is LoadState.Loading -> {
-                        item { CircularProgressIndicator(modifier = Modifier.fillMaxWidth()) }
-                    }
-                    loadState.refresh is LoadState.Error -> {
-                        item {
-                            val error = (loadState.refresh as LoadState.Error).error
-                            Text(
-                                text = error.localizedMessage ?: "An error occurred",
-                                modifier = Modifier.padding(16.dp)
-                            )
+                eventList.apply {
+                    when {
+                        loadState.refresh is LoadState.Loading -> {
+                            item { Loading() }
+                        }
+
+                        loadState.append is LoadState.Loading -> {
+                            item { Loading() }
+                        }
+
+                        loadState.refresh is LoadState.Error -> {
+                            item {
+                                val error = (loadState.refresh as LoadState.Error).error
+                                Error(error.localizedMessage ?: "An error occurred")
+                            }
                         }
                     }
                 }

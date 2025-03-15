@@ -6,7 +6,7 @@ import androidx.activity.compose.setContent
 import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import dagger.hilt.android.AndroidEntryPoint
-import dev.phyo.tm_events.presentation.events.EventContent
+import dev.phyo.tm_events.presentation.events.EventScreen
 import dev.phyo.tm_events.presentation.events.EventsViewModel
 import dev.phyo.tm_events.ui.theme.TM_EventsTheme
 
@@ -18,7 +18,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TM_EventsTheme {
-                EventContent(eventsViewModel)
+                EventScreen(eventsViewModel)
             }
         }
     }

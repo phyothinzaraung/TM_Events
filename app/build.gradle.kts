@@ -66,11 +66,11 @@ dependencies {
     implementation(libs.room.runtime)
     implementation(libs.room.ktx)
     ksp(libs.room.compiler)
-    // Paging 3 Library
+    //Paging 3 Library
     implementation(libs.androidx.paging.runtime.ktx)
-    // Paging with Jetpack Compose
+    //Paging with Jetpack Compose
     implementation(libs.androidx.paging.compose)
-    // Paging with Room
+    //Paging with Room
     implementation(libs.androidx.room.paging)
 
     testImplementation(libs.junit)
