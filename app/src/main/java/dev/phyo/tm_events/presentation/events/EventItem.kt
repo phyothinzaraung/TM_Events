@@ -67,7 +67,7 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = event._embedded.venues[0].name,
+                    text = event.embedded.venues[0].name,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )

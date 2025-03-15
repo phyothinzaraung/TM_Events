@@ -1,7 +1,7 @@
 package dev.phyo.tm_events.util
 
-sealed class DataResult<T>(val data:T? = null, val message: String? = null) {
-    class Success<T>(data: T?): DataResult<T>(data, null)
-    class Error<T>(message: String?): DataResult<T>(null, message)
+sealed class DataResult<out T> {
+    class Success<out T>(val data: T): DataResult<T>()
+    class Error<T>(val message: String?): DataResult<T>()
     class Loading<T>(): DataResult<T>()
 }

@@ -6,7 +6,7 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.components.ViewModelComponent
 import dev.phyo.tm_events.data.helper.IEventHelperImpl
 import dev.phyo.tm_events.data.helper.IEventHelper
-import dev.phyo.tm_events.data.service.IEventService
+import dev.phyo.tm_events.data.remote.IEventService
 
 @Module
 @InstallIn(ViewModelComponent::class)
