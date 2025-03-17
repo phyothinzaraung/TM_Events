@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import dev.phyo.tm_events.data.remote.IEventService
+import dev.phyo.tm_events.data.remote.service.IEventService
 import dev.phyo.tm_events.util.Constant.Companion.API_KEY
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
@@ -65,7 +65,7 @@ object NetworkModule {
 
     @Provides
     @Singleton
-    fun providesEventService(retrofit: Retrofit): IEventService{
+    fun providesEventService(retrofit: Retrofit): IEventService {
         return retrofit.create(IEventService::class.java)
     }
 }

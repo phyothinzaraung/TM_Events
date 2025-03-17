@@ -1,4 +1,4 @@
-package dev.phyo.tm_events.data.model
+package dev.phyo.tm_events.data.remote.model
 
 data class Page(
     val size: Int,

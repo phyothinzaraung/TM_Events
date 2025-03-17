@@ -1,6 +1,6 @@
-package dev.phyo.tm_events.data.remote
+package dev.phyo.tm_events.data.remote.service
 
-import dev.phyo.tm_events.data.model.ApiResponse
+import dev.phyo.tm_events.data.remote.model.ApiResponse
 import retrofit2.Response
 import retrofit2.http.GET
 import retrofit2.http.Query

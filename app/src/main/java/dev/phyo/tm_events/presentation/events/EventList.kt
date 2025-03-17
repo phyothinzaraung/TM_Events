@@ -25,11 +25,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.input.ImeAction
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
-import dev.phyo.tm_events.data.model.Event
+import dev.phyo.tm_events.data.remote.model.EventDto
+import dev.phyo.tm_events.domain.model.Event
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) {
+fun EventList(eventDtoList: LazyPagingItems<Event>, modifier: Modifier = Modifier) {
 
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
@@ -81,7 +82,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
             isRefreshing = isRefreshing,
             onRefresh = {
                 isRefreshing = true
-                eventList.refresh()
+                eventDtoList.refresh()
                 isRefreshing = false
             }
         ) {
@@ -90,14 +91,14 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
                     .fillMaxSize()
                     .padding(innerPadding)
             ) {
-                items(eventList.itemCount) { index ->
-                    val event = eventList[index]
+                items(eventDtoList.itemCount) { index ->
+                    val event = eventDtoList[index]
                     if (event != null &&
                         (searchQuery.isEmpty() || event.name.contains(
                             searchQuery,
                             ignoreCase = true
                         ) ||
-                                event.embedded.venues[0].name.contains(
+                                event.venueName.contains(
                                     searchQuery,
                                     ignoreCase = true
                                 ))
@@ -106,7 +107,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
                     }
                 }
 
-                eventList.apply {
+                eventDtoList.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {
                             item { Loading() }

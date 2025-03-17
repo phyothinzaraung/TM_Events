@@ -1,6 +1,6 @@
-package dev.phyo.tm_events.data.model
+package dev.phyo.tm_events.data.remote.model
 
-data class Image(
+data class ImageDto(
     val url: String,
     val ratio: String,
     val width: Int,

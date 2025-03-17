@@ -24,8 +24,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.bumptech.glide.integration.compose.ExperimentalGlideComposeApi
 import com.bumptech.glide.integration.compose.GlideImage
-import dev.phyo.tm_events.data.model.Event
-import dev.phyo.tm_events.data.model.Image
+import dev.phyo.tm_events.domain.model.Event
 
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
@@ -42,7 +41,7 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
             verticalAlignment = Alignment.CenterVertically){
 
             GlideImage(
-                model = getHighestResolutionImage(event.images),
+                model = event.imageUrl,
                 contentDescription = event.name,
                 contentScale = ContentScale.Crop,
                 modifier = modifier.size(120.dp)
@@ -61,21 +60,17 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 )
                 Spacer(modifier = Modifier.height(4.dp))
                 Text(
-                    text = event.dates.start.localDate,
+                    text = event.eventDate,
                     style = MaterialTheme.typography.bodyMedium,
                     color = Color.Gray
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
-                    text = event.embedded.venues[0].name,
+                    text = event.venueName,
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )
             }
         }
     }
-}
-
-fun getHighestResolutionImage(images: List<Image>): String? {
-    return images.maxByOrNull { it.width * it.height }?.url
 }
