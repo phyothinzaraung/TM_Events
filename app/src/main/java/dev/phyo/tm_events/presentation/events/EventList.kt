@@ -34,7 +34,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
     var searchQuery by remember { mutableStateOf("") }
     var isSearching by remember { mutableStateOf(false) }
 
-    val isRefreshing = eventList.loadState.refresh is LoadState.Loading
+    var isRefreshing = eventList.loadState.refresh is LoadState.Loading
 
     Scaffold(
         topBar = {
@@ -80,35 +80,48 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
     ) { innerPadding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = { eventList.refresh() }
+            onRefresh = {
+                isRefreshing = true
+                eventList.refresh()
+                isRefreshing = false
+            }
         ) {
-            if (eventList.loadState.refresh is LoadState.Error) {
-                val errorMessage = (eventList.loadState.refresh as LoadState.Error).error.localizedMessage
-                Error(errorMessage ?: "An error occurred")
-            } else {
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(innerPadding)
-                ) {
-                    items(eventList.itemCount) { index ->
-                        val event = eventList[index]
-                        if (event != null &&
-                            (searchQuery.isEmpty() || event.name.contains(
-                                searchQuery,
-                                ignoreCase = true
-                            ) || event.venueName.contains(
-                                searchQuery,
-                                ignoreCase = true
-                            ))
-                        ) {
-                            EventItem(event)
-                        }
+            LazyColumn(
+                modifier = modifier
+                    .fillMaxSize()
+                    .padding(innerPadding)
+            ) {
+                items(eventList.itemCount) { index ->
+                    val event = eventList[index]
+                    if (event != null &&
+                        (searchQuery.isEmpty() || event.name.contains(
+                            searchQuery,
+                            ignoreCase = true
+                        ) ||
+                                event.venueName.contains(
+                                    searchQuery,
+                                    ignoreCase = true
+                                ))
+                    ) {
+                        EventItem(event)
                     }
+                }
 
+                eventList.apply {
                     when {
-                        eventList.loadState.append is LoadState.Loading -> {
+                        loadState.refresh is LoadState.Loading -> {
                             item { Loading() }
+                        }
+
+                        loadState.append is LoadState.Loading -> {
+                            item { Loading() }
+                        }
+
+                        loadState.refresh is LoadState.Error -> {
+                            item {
+                                val error = (loadState.refresh as LoadState.Error).error
+                                Error(error.localizedMessage ?: "An error occurred")
+                            }
                         }
                     }
                 }
@@ -116,4 +129,3 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
         }
     }
 }
-

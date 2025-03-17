@@ -38,8 +38,7 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
     ) {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(8.dp),
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
             GlideImage(
@@ -47,13 +46,16 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 contentDescription = event.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(120.dp)
+                    .size(140.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
 
             Spacer(modifier = Modifier.width(12.dp))
 
-            Column(modifier = Modifier.weight(1f)) {
+            Column(modifier = Modifier
+                .weight(1f)
+                .padding(8.dp)
+            ) {
                 Text(
                     text = event.name,
                     style = MaterialTheme.typography.titleMedium,
@@ -70,6 +72,12 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = event.venueName,
+                    style = MaterialTheme.typography.bodySmall,
+                    color = Color.Gray
+                )
+                Spacer(modifier = Modifier.height(2.dp))
+                Text(
+                    text = "${event.city}, ${event.stateCode}",
                     style = MaterialTheme.typography.bodySmall,
                     color = Color.Gray
                 )

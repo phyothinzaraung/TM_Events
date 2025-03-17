@@ -6,5 +6,7 @@ data class Event(
     val imageUrl: String,
     val eventDate: String,
     val eventTime: String,
-    val venueName: String
+    val venueName: String,
+    val city: String,
+    val stateCode: String
 )
