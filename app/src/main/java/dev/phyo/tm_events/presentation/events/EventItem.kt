@@ -29,28 +29,31 @@ import dev.phyo.tm_events.domain.model.Event
 @OptIn(ExperimentalGlideComposeApi::class)
 @Composable
 fun EventItem(event: Event, modifier: Modifier = Modifier) {
-    Card(modifier = modifier
-        .fillMaxWidth()
-        .padding(8.dp),
-        shape = RoundedCornerShape(12.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
-    ){
-        Row (modifier = modifier
+    Card(
+        modifier = modifier
             .fillMaxWidth()
             .padding(8.dp),
-            verticalAlignment = Alignment.CenterVertically){
-
+        shape = RoundedCornerShape(12.dp),
+        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(8.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             GlideImage(
                 model = event.imageUrl,
                 contentDescription = event.name,
                 contentScale = ContentScale.Crop,
-                modifier = modifier.size(120.dp)
+                modifier = Modifier
+                    .size(120.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
 
-            Spacer(modifier.width(12.dp))
+            Spacer(modifier = Modifier.width(12.dp))
 
-            Column(modifier = modifier.weight(1f)){
+            Column(modifier = Modifier.weight(1f)) {
                 Text(
                     text = event.name,
                     style = MaterialTheme.typography.titleMedium,

@@ -25,7 +25,7 @@ class EventsViewModel @Inject constructor(private val getEventsUseCase: GetEvent
     val eventsFlow: StateFlow<Flow<PagingData<Event>>?> get() = _eventsFlow
 
     init {
-        getEvents("Sacramento")
+        getEvents("")
     }
 
     private fun getEvents(city: String) {

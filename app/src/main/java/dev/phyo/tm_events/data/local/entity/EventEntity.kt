@@ -14,11 +14,11 @@ data class EventEntity(
     @PrimaryKey(autoGenerate = true)
     val id: Int=0,
     val name: String,
-    val imageUrl: String,
-    val imageRatio: String,
-    val imageWidth: Int,
-    val imageHeight: Int,
-    val eventDate: String,
-    val eventTime: String,
-    val venueName: String
+    val imageUrl: String?=null,
+    val imageRatio: String ?= null,
+    val imageWidth: Int? = null,
+    val imageHeight: Int? = null,
+    val eventDate: String? = null,
+    val eventTime: String? = null,
+    val venueName: String? = null
 )
