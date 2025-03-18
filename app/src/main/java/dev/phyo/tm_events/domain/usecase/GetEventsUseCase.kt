@@ -11,14 +11,5 @@ class GetEventsUseCase @Inject constructor(
     ) {
     suspend operator fun invoke(query: String): Flow<PagingData<Event>>{
         return eventRepository.getEvents(query)
-//        return flow {
-//            eventRepository.getEvents(city).collect{
-//                when(it){
-//                    is DataResult.Success -> {emit(DataResult.Success(flow { emit(it.data) }))}
-//                    is DataResult.Error -> {emit(DataResult.Error(it.message))}
-//                    is DataResult.Loading -> {emit(DataResult.Loading())}
-//                }
-//            }
-//        }
     }
 }

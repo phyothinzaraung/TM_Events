@@ -1,4 +1,4 @@
-package dev.phyo.tm_events.presentation.events
+package dev.phyo.tm_events.presentation.events.ui
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

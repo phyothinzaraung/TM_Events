@@ -1,4 +1,4 @@
-package dev.phyo.tm_events.presentation.events
+package dev.phyo.tm_events.presentation.utils
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope

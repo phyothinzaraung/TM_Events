@@ -1,4 +1,4 @@
-package dev.phyo.tm_events.presentation.events
+package dev.phyo.tm_events.presentation.events.ui
 
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -21,6 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import dev.phyo.tm_events.domain.model.Event
+import dev.phyo.tm_events.presentation.utils.ErrorView
+import dev.phyo.tm_events.presentation.utils.LoadingView
+import dev.phyo.tm_events.presentation.utils.PullToRefreshBox
+import dev.phyo.tm_events.presentation.utils.SearchView
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
