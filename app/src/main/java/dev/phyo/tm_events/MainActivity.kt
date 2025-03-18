@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import dev.phyo.tm_events.presentation.events.EventScreen
 import dev.phyo.tm_events.presentation.events.EventsViewModel
 import dev.phyo.tm_events.ui.theme.TM_EventsTheme
+import dev.phyo.tm_events.util.NetworkUtils
 
 @AndroidEntryPoint
 class MainActivity : ComponentActivity() {
@@ -18,7 +19,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         setContent {
             TM_EventsTheme {
-                EventScreen(eventsViewModel)
+                EventScreen(eventsViewModel, networkUtils = NetworkUtils(this), this)
             }
         }
     }

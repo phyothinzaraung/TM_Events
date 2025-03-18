@@ -1,11 +1,13 @@
 package dev.phyo.tm_events.data.helper
 
+import android.content.Context
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.Pager
 import androidx.paging.PagingConfig
 import androidx.paging.PagingData
 import androidx.paging.map
 import dev.phyo.tm_events.data.local.dao.EventDao
+import dev.phyo.tm_events.data.local.database.EventDatabase
 import dev.phyo.tm_events.data.mapper.toDomain
 import dev.phyo.tm_events.data.remote.mediator.EventRemoteMediator
 import dev.phyo.tm_events.data.remote.service.IEventService
@@ -15,13 +17,14 @@ import kotlinx.coroutines.flow.map
 
 class IEventHelperImpl(
     private val eventService: IEventService,
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val context: Context
 ): IEventHelper {
     @OptIn(ExperimentalPagingApi::class)
     override fun getEvents(query: String): Flow<PagingData<Event>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = EventRemoteMediator(eventService, eventDao),
+            remoteMediator = EventRemoteMediator(eventService, eventDao, context),
             pagingSourceFactory = {
                 if (query.isNotEmpty()){
                     eventDao.searchEvents(query)

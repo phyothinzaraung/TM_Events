@@ -29,7 +29,7 @@ class EventsViewModel @Inject constructor(
 
     fun getEvents(query: String = "") {
         viewModelScope.launch {
-            _uiState.value = UIState.Loading
+            UIState.Loading
             try {
                 _searchQuery.value = query
                 val events = getEventsUseCase(query)

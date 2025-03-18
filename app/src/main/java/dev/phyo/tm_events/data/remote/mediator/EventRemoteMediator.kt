@@ -1,5 +1,6 @@
 package dev.phyo.tm_events.data.remote.mediator
 
+import android.content.Context
 import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
@@ -11,12 +12,13 @@ import dev.phyo.tm_events.data.local.dao.EventDao
 import dev.phyo.tm_events.data.local.entity.EventEntity
 import dev.phyo.tm_events.data.mapper.toEntity
 import dev.phyo.tm_events.data.remote.service.IEventService
-import java.io.IOException
+import dev.phyo.tm_events.util.NetworkUtils
 
 @OptIn(ExperimentalPagingApi::class)
 class EventRemoteMediator(
     private val eventService: IEventService,
-    private val eventDao: EventDao
+    private val eventDao: EventDao,
+    private val context: Context
 ) : RemoteMediator<Int, EventEntity>() {
 
     private var lastPageFetched: Int = -1
@@ -27,11 +29,19 @@ class EventRemoteMediator(
         state: PagingState<Int, EventEntity>
     ): MediatorResult {
         return try {
+            if (!NetworkUtils(context).isOnline()) {
+                Log.d("RemoteMediator", "Device is offline. Loading from local database.")
+                return MediatorResult.Success(endOfPaginationReached = false) // Prevents network call
+            }
             val page = when (loadType) {
                 LoadType.REFRESH -> {
-                    eventDao.clearEvents()
-                    lastPageFetched = -1
-                    0
+                    if (NetworkUtils(context).isOnline()) {
+                        eventDao.clearEvents()
+                        lastPageFetched = -1
+                        0
+                    } else {
+                        return MediatorResult.Success(endOfPaginationReached = true)
+                    }
                 }
                 LoadType.PREPEND -> {
                     return MediatorResult.Success(endOfPaginationReached = true)
@@ -45,11 +55,13 @@ class EventRemoteMediator(
             if (response.isSuccessful) {
                 val eventDtos = response.body()?.embedded?.eventDtos
                 if (!eventDtos.isNullOrEmpty()) {
-
                     Log.d("RemoteMediator", "Fetched ${eventDtos.size} items for page $page")
 
                     val eventEntities = eventDtos.map { it.toEntity() }
                     eventDao.insertEvents(eventEntities)
+
+                    val count = eventDao.getEventCount()
+                    Log.d("RemoteMediator", "Total items in database: $count")
 
                     lastPageFetched = page
 
@@ -61,11 +73,11 @@ class EventRemoteMediator(
                 }
             } else {
                 Log.d("RemoteMediator", "API error: ${response.message()}")
-                MediatorResult.Error(IOException("Failed to fetch data from API"))
+                MediatorResult.Success(endOfPaginationReached = true)
             }
         } catch (e: Exception) {
             Log.d("RemoteMediator", "Unexpected error: ${e.message}")
-            MediatorResult.Error(e)
+            MediatorResult.Success(endOfPaginationReached = true)
         }
     }
 }

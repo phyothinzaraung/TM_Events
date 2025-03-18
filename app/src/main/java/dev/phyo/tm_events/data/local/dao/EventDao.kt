@@ -22,4 +22,7 @@ interface EventDao {
     @Query("SELECT * FROM events WHERE name LIKE '%' || :query || '%' OR venueName LIKE '%' || :query || '%' OR city LIKE '%' || :query || '%'")
     fun searchEvents(query: String):PagingSource<Int, EventEntity>
 
+    @Query("SELECT COUNT(*) FROM events")
+    suspend fun getEventCount(): Int
+
 }
