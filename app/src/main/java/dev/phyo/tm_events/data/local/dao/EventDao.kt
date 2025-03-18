@@ -6,7 +6,6 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import dev.phyo.tm_events.data.local.entity.EventEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface EventDao {
@@ -19,4 +18,8 @@ interface EventDao {
 
     @Query("DELETE FROM events")
     suspend fun clearEvents()
+
+    @Query("SELECT * FROM events WHERE name LIKE '%' || :query || '%' OR venueName LIKE '%' || :query || '%' OR city LIKE '%' || :query || '%'")
+    fun searchEvents(query: String):PagingSource<Int, EventEntity>
+
 }

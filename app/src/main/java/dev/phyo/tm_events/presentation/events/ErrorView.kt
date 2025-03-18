@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 
 @Composable
-fun Error(errorMessage: String, modifier: Modifier = Modifier) {
+fun ErrorView(errorMessage: String, modifier: Modifier = Modifier) {
     Scaffold { innerPadding ->
         Box(modifier = modifier
             .fillMaxWidth()

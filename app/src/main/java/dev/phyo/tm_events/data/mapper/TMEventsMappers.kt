@@ -32,12 +32,12 @@ fun EventDto.toEntity(): EventEntity {
 
     return EventEntity(
         name = name,
-        imageUrl = bestImage.url ?: "",
-        imageRatio = bestImage.ratio ?: "",
-        imageWidth = bestImage.width ?: 0,
-        imageHeight = bestImage.height ?: 0,
+        imageUrl = bestImage.url,
+        imageRatio = bestImage.ratio,
+        imageWidth = bestImage.width,
+        imageHeight = bestImage.height,
         eventDate = formattedDate ?: "",
-        eventTime = dates.start.localTime ?: "",
+        eventTime = dates.start.localTime,
         venueName = embedded.venues.firstOrNull()?.name ?: "unknown",
         city = embedded.venues.firstOrNull()?.city?.name ?: "",
         stateCode = embedded.venues.firstOrNull()?.state?.stateCode ?: ""

@@ -1,12 +1,8 @@
 package dev.phyo.tm_events.presentation.events
 
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
@@ -15,7 +11,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -23,51 +18,39 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.input.ImeAction
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import dev.phyo.tm_events.domain.model.Event
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) {
-    var searchQuery by remember { mutableStateOf("") }
+fun EventList(
+    eventList: LazyPagingItems<Event>,
+    onSearchQueryChanged: (String) -> Unit,
+    searchQuery: String,
+    modifier: Modifier = Modifier
+) {
     var isSearching by remember { mutableStateOf(false) }
-
-    var isRefreshing = eventList.loadState.refresh is LoadState.Loading
+    val isRefreshing = eventList.loadState.refresh is LoadState.Loading
 
     Scaffold(
         topBar = {
             TopAppBar(
                 title = {
                     if (isSearching) {
-                        Box(Modifier.fillMaxWidth()) {
-                            TextField(
-                                value = searchQuery,
-                                onValueChange = { searchQuery = it },
-                                placeholder = { Text("Search...") },
-                                singleLine = true,
-                                modifier = Modifier.fillMaxWidth(),
-                                keyboardOptions = KeyboardOptions.Default.copy(
-                                    imeAction = ImeAction.Done
-                                ),
-                                keyboardActions = KeyboardActions(
-                                    onDone = { isSearching = false }
-                                )
-                            )
-                        }
+                        SearchView(
+                            searchQuery = searchQuery,
+                            onSearchQueryChanged = onSearchQueryChanged,
+                            onCloseSearch = { isSearching = false }
+                        )
                     } else {
                         Text("Simple TM Events List")
                     }
                 },
                 actions = {
                     IconButton(onClick = {
-                        if (isSearching) {
-                            searchQuery = ""
-                            isSearching = false
-                        } else {
-                            isSearching = true
-                        }
+                        isSearching = !isSearching
+                        if (!isSearching) onSearchQueryChanged("")
                     }) {
                         Icon(
                             imageVector = if (isSearching) Icons.Default.Close else Icons.Default.Search,
@@ -80,11 +63,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
     ) { innerPadding ->
         PullToRefreshBox(
             isRefreshing = isRefreshing,
-            onRefresh = {
-                isRefreshing = true
-                eventList.refresh()
-                isRefreshing = false
-            }
+            onRefresh = { eventList.refresh() }
         ) {
             LazyColumn(
                 modifier = modifier
@@ -93,16 +72,7 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
             ) {
                 items(eventList.itemCount) { index ->
                     val event = eventList[index]
-                    if (event != null &&
-                        (searchQuery.isEmpty() || event.name.contains(
-                            searchQuery,
-                            ignoreCase = true
-                        ) ||
-                                event.venueName.contains(
-                                    searchQuery,
-                                    ignoreCase = true
-                                ))
-                    ) {
+                    if (event != null) {
                         EventItem(event)
                     }
                 }
@@ -110,17 +80,17 @@ fun EventList(eventList: LazyPagingItems<Event>, modifier: Modifier = Modifier) 
                 eventList.apply {
                     when {
                         loadState.refresh is LoadState.Loading -> {
-                            item { Loading() }
+                            item { LoadingView() }
                         }
 
                         loadState.append is LoadState.Loading -> {
-                            item { Loading() }
+                            item { LoadingView() }
                         }
 
                         loadState.refresh is LoadState.Error -> {
                             item {
                                 val error = (loadState.refresh as LoadState.Error).error
-                                Error(error.localizedMessage ?: "An error occurred")
+                                ErrorView(error.localizedMessage ?: "An error occurred")
                             }
                         }
                     }

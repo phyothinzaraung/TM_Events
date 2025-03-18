@@ -1,6 +1,8 @@
 package dev.phyo.tm_events.data.remote.mediator
 
+import android.os.Build
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadType
 import androidx.paging.PagingState
@@ -14,12 +16,12 @@ import java.io.IOException
 @OptIn(ExperimentalPagingApi::class)
 class EventRemoteMediator(
     private val eventService: IEventService,
-    private val eventDao: EventDao,
-    private val city: String
+    private val eventDao: EventDao
 ) : RemoteMediator<Int, EventEntity>() {
 
     private var lastPageFetched: Int = -1
 
+    @RequiresApi(Build.VERSION_CODES.O)
     override suspend fun load(
         loadType: LoadType,
         state: PagingState<Int, EventEntity>
@@ -39,7 +41,7 @@ class EventRemoteMediator(
                 }
             }
 
-            val response = eventService.getEvents(city, page, state.config.pageSize)
+            val response = eventService.getEvents(page, state.config.pageSize)
             if (response.isSuccessful) {
                 val eventDtos = response.body()?.embedded?.eventDtos
                 if (!eventDtos.isNullOrEmpty()) {
