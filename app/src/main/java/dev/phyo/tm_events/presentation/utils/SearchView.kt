@@ -28,7 +28,9 @@ fun SearchView(
 ) {
     TextField(
         value = searchQuery,
-        onValueChange = onSearchQueryChanged,
+        onValueChange = { newQuery ->
+            onSearchQueryChanged(newQuery)
+        },
         placeholder = { Text("Search by name, city or venue", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
         singleLine = true,
         colors = TextFieldDefaults.colors(
@@ -42,7 +44,7 @@ fun SearchView(
             unfocusedTextColor = MaterialTheme.colorScheme.onSurface
         ),
         keyboardOptions = KeyboardOptions.Default.copy(
-            imeAction = ImeAction.Search
+            imeAction = ImeAction.Done
         ),
         keyboardActions = KeyboardActions(
             onSearch = { onCloseSearch() }
@@ -56,11 +58,11 @@ fun SearchView(
         },
         modifier = Modifier
             .fillMaxWidth()
-            .heightIn(min = 48.dp) // Ensure minimum height for touch targets
-            .padding(horizontal = 8.dp) // Add horizontal padding for better spacing
+            .heightIn(min = 48.dp)
+            .padding(horizontal = 8.dp)
             .background(
                 color = MaterialTheme.colorScheme.surfaceVariant.copy(alpha = 0.6f),
-                shape = RoundedCornerShape(16.dp) // Rounded corners for a modern look
+                shape = RoundedCornerShape(16.dp)
             )
     )
 }

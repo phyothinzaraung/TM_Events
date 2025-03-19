@@ -7,13 +7,16 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.phyo.tm_events.domain.model.Event
 import dev.phyo.tm_events.domain.usecase.GetEventsUseCase
 import dev.phyo.tm_events.util.NetworkUtils
+import kotlinx.coroutines.FlowPreview
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.debounce
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
+@OptIn(FlowPreview::class)
 @HiltViewModel
 class EventsViewModel @Inject constructor(
     private val getEventsUseCase: GetEventsUseCase,
@@ -32,12 +35,19 @@ class EventsViewModel @Inject constructor(
     init {
         _uiState.value = UIState.Loading
         checkNetworkStatus()
+        viewModelScope.launch {
+            _searchQuery
+                .debounce(1000)
+                .collect{ query ->
+                    getEvents(query)
+                }
+        }
     }
 
 
     fun getEvents(query: String = "") {
         viewModelScope.launch {
-            UIState.Loading
+            _uiState.value = UIState.Loading
             delay(500)
             try {
                 _searchQuery.value = query
