@@ -26,8 +26,8 @@ This is an Android application showing alist of events built using **Clean Archi
 - **Retrofit**: For making API calls to retrieve event data.
 - **Flow**: For managing asynchronous data streams.
 - **RemoteMediator**: For handling pagination and syncing data between the API and the local database.
-- **JUnit**: For unit testing.
-- **Espresso**: For UI testing.
+- **JUnit, Mockk, robolectric**: For unit testing.
+- **Compose Tesing API**: For UI testing.
 
 ## Features
 
