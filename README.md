@@ -1,6 +1,6 @@
 # Android Event App with Clean Architecture and Jetpack Compose
 
-This is an Android application built using **Clean Architecture** and **Jetpack Compose** for UI development. The app retrieves event data from an API and stores it in a local database. Pagination is implemented with **RemoteMediator** to handle large datasets efficiently.
+This is an Android application showing alist of events built using **Clean Architecture** and **Jetpack Compose** for UI development. The app retrieves event data from an API and stores it in a local database. Pagination is implemented with **RemoteMediator** to handle large datasets efficiently. The application can also support search functioality by event name, city or venue.
 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
@@ -69,7 +69,7 @@ Unit tests are written using **JUnit** to ensure that the individual components 
 
 ### UI Testing
 
-UI tests are written using **Espresso** to verify the correctness of the user interface. These tests ensure that the UI behaves as expected and interacts with the underlying components properly.
+UI tests are written using **Compose Testing APIs** to verify the correctness of the user interface. These tests ensure that the UI behaves as expected and interacts with the underlying components properly.
 
 - UI tests verify that data is displayed correctly, pagination works, and search functionality is functional.
 
