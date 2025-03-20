@@ -81,8 +81,6 @@ Here are some screenshots of the app:
 
 _Above: Screenshot showing the event listing UI with pagination._
 
-_Above: Screenshot showing the event listing UI with pagination._
-
 ## Getting Started
 
 To run this project locally, follow the steps below:
