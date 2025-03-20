@@ -34,7 +34,7 @@ This is an Android application built using **Clean Architecture** and **Jetpack 
 - Fetches event data from a remote API.
 - Saves event data in a local database using Room.
 - Supports pagination for loading large datasets.
-- Allows searching events based on a query.
+- Allows searching events based on a event name, city or venue.
 - Built using Jetpack Compose for modern UI design.
 - Dependency injection with Dagger Hilt for clean and efficient code.
 - Includes unit tests and UI tests to ensure functionality.
