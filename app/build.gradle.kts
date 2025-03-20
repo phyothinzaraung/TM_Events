@@ -39,6 +39,11 @@ android {
     buildFeatures {
         compose = true
     }
+//    testOptions {
+//        unitTests.all {
+//            jvmArgs = listOf("-Xmx4g")
+//        }
+//    }
 }
 
 dependencies {
@@ -80,4 +85,24 @@ dependencies {
     androidTestImplementation(libs.androidx.ui.test.junit4)
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
+
+    testImplementation("org.junit.jupiter:junit-jupiter-api:5.7.1")
+    testImplementation("org.junit.jupiter:junit-jupiter-engine:5.7.1")
+    testImplementation("io.mockk:mockk:1.13.8")
+    testImplementation("androidx.arch.core:core-testing:2.1.0")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.5.2")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-core:1.5.2")
+    testImplementation("androidx.lifecycle:lifecycle-viewmodel-ktx:2.3.1")
+    testImplementation("androidx.lifecycle:lifecycle-livedata-ktx:2.3.1")
+    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
+    testImplementation("net.bytebuddy:byte-buddy:1.14.10")
+    // Robolectric for testing
+    testImplementation("org.robolectric:robolectric:4.13")
+    testImplementation("androidx.room:room-testing:2.6.1")
+    testImplementation("androidx.test:core-ktx:1.4.0")
+}
+
+// Configure heap size for all test tasks
+tasks.withType<Test> {
+    jvmArgs = listOf("-Xmx4g")
 }

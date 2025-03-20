@@ -33,8 +33,11 @@ class EventsViewModel @Inject constructor(
     val isOffline: StateFlow<Boolean> get() = _isOffline
 
     init {
-        _uiState.value = UIState.Loading
-        checkNetworkStatus()
+        observeSearchQuery()
+        observeNetworkStatus()
+    }
+
+    private fun observeSearchQuery(){
         viewModelScope.launch {
             _searchQuery
                 .debounce(1000)
@@ -44,11 +47,9 @@ class EventsViewModel @Inject constructor(
         }
     }
 
-
     fun getEvents(query: String = "") {
         viewModelScope.launch {
             _uiState.value = UIState.Loading
-            delay(500)
             try {
                 _searchQuery.value = query
                 val events = getEventsUseCase(query)
@@ -63,7 +64,7 @@ class EventsViewModel @Inject constructor(
         _searchQuery.value = newQuery
     }
 
-    private fun checkNetworkStatus(){
+    private fun observeNetworkStatus(){
         viewModelScope.launch {
             while (true){
                 _isOffline.value = !networkUtils.isOnline()
