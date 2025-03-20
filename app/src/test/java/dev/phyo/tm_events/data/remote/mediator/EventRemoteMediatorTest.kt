@@ -9,7 +9,6 @@ import dev.phyo.tm_events.data.local.dao.EventDao
 import dev.phyo.tm_events.data.local.entity.EventEntity
 import dev.phyo.tm_events.data.remote.model.ApiResponse
 import dev.phyo.tm_events.data.remote.service.IEventService
-import dev.phyo.tm_events.util.NetworkUtils
 import io.mockk.*
 import kotlinx.coroutines.test.runTest
 import org.junit.Assert.*
@@ -22,16 +21,14 @@ class EventRemoteMediatorTest {
 
     private lateinit var mockEventService: IEventService
     private lateinit var mockEventDao: EventDao
-    private lateinit var mockNetworkUtils: NetworkUtils
     private lateinit var eventRemoteMediator: EventRemoteMediator
 
     @Before
     fun setup() {
         mockEventService = mockk()
         mockEventDao = mockk()
-        mockNetworkUtils = mockk()
 
-        eventRemoteMediator = EventRemoteMediator(mockEventService, mockEventDao, mockNetworkUtils)
+        eventRemoteMediator = EventRemoteMediator(mockEventService, mockEventDao)
     }
 
 
@@ -46,7 +43,6 @@ class EventRemoteMediatorTest {
             leadingPlaceholderCount = 0
         )
         val mockResponse = mockk<Response<ApiResponse>>()
-        coEvery { mockNetworkUtils.isOnline() } returns true
         coEvery { mockEventService.getEvents(mockPage, 10) } returns mockResponse
         coEvery { mockResponse.isSuccessful } returns true
         coEvery { mockResponse.body()?.embedded?.eventDtos } returns listOf(mockk())
@@ -72,7 +68,6 @@ class EventRemoteMediatorTest {
             leadingPlaceholderCount = 0
         )
         val mockResponse = mockk<Response<ApiResponse>>()
-        coEvery { mockNetworkUtils.isOnline() } returns true
         coEvery { mockEventService.getEvents(mockPage, 10) } returns mockResponse
         coEvery { mockResponse.isSuccessful } returns false
 
@@ -97,7 +92,6 @@ class EventRemoteMediatorTest {
             leadingPlaceholderCount = 0
         )
         val mockResponse = mockk<Response<ApiResponse>>()
-        coEvery { mockNetworkUtils.isOnline() } returns true
         coEvery { mockEventService.getEvents(mockPage, 10) } returns mockResponse
         coEvery { mockResponse.isSuccessful } returns true
         coEvery { mockResponse.body()?.embedded?.eventDtos } returns emptyList()

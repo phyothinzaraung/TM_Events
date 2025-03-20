@@ -100,6 +100,7 @@ dependencies {
     testImplementation("org.robolectric:robolectric:4.13")
     testImplementation("androidx.room:room-testing:2.6.1")
     testImplementation("androidx.test:core-ktx:1.4.0")
+    testImplementation("androidx.paging:paging-testing:3.3.6")
 }
 
 // Configure heap size for all test tasks

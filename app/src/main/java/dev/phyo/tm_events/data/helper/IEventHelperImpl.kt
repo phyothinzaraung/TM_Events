@@ -10,20 +10,18 @@ import dev.phyo.tm_events.data.mapper.toDomain
 import dev.phyo.tm_events.data.remote.mediator.EventRemoteMediator
 import dev.phyo.tm_events.data.remote.service.IEventService
 import dev.phyo.tm_events.domain.model.Event
-import dev.phyo.tm_events.util.NetworkUtils
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 
 class IEventHelperImpl(
     private val eventService: IEventService,
-    private val eventDao: EventDao,
-    private val networkUtils: NetworkUtils
+    private val eventDao: EventDao
 ): IEventHelper {
     @OptIn(ExperimentalPagingApi::class)
     override fun getEvents(query: String): Flow<PagingData<Event>> {
         return Pager(
             config = PagingConfig(pageSize = 20),
-            remoteMediator = EventRemoteMediator(eventService, eventDao, networkUtils),
+            remoteMediator = EventRemoteMediator(eventService, eventDao),
             pagingSourceFactory = {
                 if (query.isNotEmpty()){
                     eventDao.searchEvents(query)

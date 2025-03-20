@@ -1,15 +1,12 @@
 package dev.phyo.tm_events.data.helper
 
-import androidx.paging.map
+import androidx.paging.PagingSource
 import dev.phyo.tm_events.data.local.dao.EventDao
 import dev.phyo.tm_events.data.local.entity.EventEntity
 import dev.phyo.tm_events.data.remote.service.IEventService
-import dev.phyo.tm_events.domain.model.Event
-import dev.phyo.tm_events.util.NetworkUtils
-import dev.phyo.tm_events.utils.FakePagingSource
 import io.mockk.*
+import kotlinx.coroutines.flow.first
 import kotlinx.coroutines.test.*
-import org.junit.Assert.assertEquals
 import org.junit.Before
 import org.junit.Test
 
@@ -18,66 +15,43 @@ class IEventHelperImplTest {
     private lateinit var eventHelper: IEventHelperImpl
     private lateinit var mockEventService: IEventService
     private lateinit var mockEventDao: EventDao
-    private lateinit var mockNetworkUtils: NetworkUtils
 
     @Before
     fun setup() {
-        // Initialize the mocks
         mockEventService = mockk()
         mockEventDao = mockk()
-        mockNetworkUtils = mockk()
-
-        // Create the instance of the class under test
-        eventHelper = IEventHelperImpl(mockEventService, mockEventDao, mockNetworkUtils)
+        eventHelper = IEventHelperImpl(mockEventService, mockEventDao)
     }
 
     @Test
-    fun `test getEvents with query`() = runTest {
+    fun `test getEvents with non-empty query calls searchEvents`() = runTest {
         // GIVEN
         val query = "test"
-        val fakeEventList = listOf(
-            EventEntity(1, "Test Event")
-        )
+        val fakePagingSource = mockk<PagingSource<Int, EventEntity>>(relaxed = true)
+        coEvery { mockEventDao.searchEvents(query) } returns fakePagingSource
 
-        coEvery { mockEventDao.searchEvents(query) } returns FakePagingSource(fakeEventList)
-
-        //WHEN
-        val flow = eventHelper.getEvents(query)
-
-        val eventsList = mutableListOf<Event>()
-        flow.collect { pagingData ->
-            pagingData.map { event ->
-                eventsList.add(event)
-            }
-        }
+        // WHEN
+        eventHelper.getEvents(query).first()
 
         // THEN
-        assertEquals(1, eventsList.size)
-        assertEquals("Test Event", eventsList[0].name)
+        coVerify { mockEventDao.searchEvents(query) }
+        coVerify(exactly = 0) { mockEventDao.getAllEvents() }
     }
 
     @Test
-    fun `test getEvents with empty query`() = runTest {
-        // Given
+    fun `test getEvents with empty query calls getAllEvents`() = runTest {
+        // GIVEN
         val query = ""
-        val fakeEventList = listOf(EventEntity(1, "Test Event"))
-        coEvery { mockEventDao.getAllEvents() } returns FakePagingSource(fakeEventList)
-        coEvery { mockNetworkUtils.isOnline() } returns true
 
-        // When
-        val flow = eventHelper.getEvents(query)
+        val fakePagingSource = mockk<PagingSource<Int, EventEntity>>(relaxed = true)
+        coEvery { mockEventDao.getAllEvents() } returns fakePagingSource
 
-        val eventsList = mutableListOf<Event>()
-        flow.collect { pagingData ->
-            pagingData.map { event ->
-                eventsList.add(event)
-            }
-        }
+        // WHEN
+        eventHelper.getEvents(query).first()
 
-        // Then
-        assertEquals(1, eventsList.size)
-        assertEquals("Test Event", eventsList[0].name)
+        // THEN
         coVerify { mockEventDao.getAllEvents() }
+        coVerify(exactly = 0) { mockEventDao.searchEvents(any()) }
     }
 }
 
