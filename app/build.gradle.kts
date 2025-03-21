@@ -39,11 +39,6 @@ android {
     buildFeatures {
         compose = true
     }
-//    testOptions {
-//        unitTests.all {
-//            jvmArgs = listOf("-Xmx4g")
-//        }
-//    }
 }
 
 dependencies {
@@ -86,17 +81,12 @@ dependencies {
     debugImplementation(libs.androidx.ui.tooling)
     debugImplementation(libs.androidx.ui.test.manifest)
 
-    testImplementation("io.mockk:mockk:1.13.8")
-    testImplementation("androidx.arch.core:core-testing:2.1.0")
-    testImplementation("org.jetbrains.kotlinx:kotlinx-coroutines-test:1.7.3")
-    testImplementation("net.bytebuddy:byte-buddy:1.14.10")
-    testImplementation("org.robolectric:robolectric:4.13")
-    testImplementation("androidx.room:room-testing:2.6.1")
-    testImplementation("androidx.test:core-ktx:1.4.0")
-    testImplementation("androidx.paging:paging-testing:3.3.6")
-}
-
-// Configure heap size for all test tasks
-tasks.withType<Test> {
-    jvmArgs = listOf("-Xmx4g")
+    testImplementation(libs.mockk)
+    testImplementation(libs.androidx.core.testing)
+    testImplementation(libs.kotlinx.coroutines.test)
+    testImplementation(libs.byte.buddy)
+    testImplementation(libs.robolectric)
+    testImplementation(libs.androidx.room.testing)
+    testImplementation(libs.core.ktx)
+    testImplementation(libs.androidx.paging.testing)
 }
