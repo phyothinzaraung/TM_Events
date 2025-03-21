@@ -75,15 +75,30 @@ This project follows **Clean Architecture** principles, which ensures separation
 
 ### Unit Testing
 
-Unit tests are written using **JUnit** to ensure that the individual components of the app are functioning correctly. These tests are designed to verify the logic of the methods, repositories, and other domain-related functionalities.
+Unit tests are written using **JUnit, Mockk, Robolectric** to ensure that the individual components of the app function correctly. These tests verify the logic of the methods, repositories, and other domain-related functionalities.
 
-- Unit tests cover core functionalities such as event retrieval, data transformation, and network interaction.
+The following unit tests are implemented in this project:
 
-### UI Testing
+- **IEventHelperImplTest** – Verifies that event data is correctly fetched from the API and stored in the database while handling different query scenarios.  
+- **EventDaoTest** – Tests the database operations, including inserting, retrieving, and searching for events in the local storage.  
+- **EventMapperTest** – Ensures that data mapping between database entities, domain models, and UI models is accurate.  
+- **EventRemoteMediatorTest** – Validates the pagination logic, ensuring correct behavior when loading data from the API and storing it in the database.  
+- **IEventRepositoryImplTest** – Checks if the repository correctly interacts with the API and database while managing data flow between them.  
+- **GetEventsUseCaseTest** – Tests the business logic for retrieving events, ensuring correct filtering, transformation, and error handling.  
+- **EventsViewModelTest** – Ensures that the ViewModel correctly processes UI interactions, maintains state, and communicates with the use case layer.
 
-UI tests are written using **Compose Testing APIs** to verify the correctness of the user interface. These tests ensure that the UI behaves as expected and interacts with the underlying components properly.
+These tests help maintain code reliability, detect regressions, and improve the overall robustness of the application.
 
-- UI tests verify that data is displayed correctly, pagination works, and search functionality is functional.
+### UI Testing  
+
+UI tests are written using **Compose Testing APIs** to verify the correctness of the user interface. These tests ensure that the UI behaves as expected and interacts properly with the underlying components.  
+
+The following UI tests are implemented in this project:  
+
+- **EventItemTest** – Ensures that a single event item is displayed correctly with the expected details, including title, date, and location.  
+- **EventListTest** – Verifies that the event list displays data correctly, supports pagination, and updates UI elements properly based on user interactions (e.g., scrolling, searching, and empty state handling).  
+
+These UI tests help ensure a smooth user experience by detecting UI regressions and validating component interactions.
 
 ## Getting Started
 
@@ -93,15 +108,34 @@ To run this project locally, follow the steps below:
 - Android Studio (latest version).
 - JDK 11 or above.
 
-### Steps
-1. Clone the repository:
+### Steps  
+
+Follow these steps to set up and run the project on your local machine:  
+
+1. **Clone the repository:**  
     ```bash
-    git clone [<your-repository-url>](https://github.com/phyothinzaraung/TM_Events.git)
-    cd <your-project-directory>
-    ```
+    git clone https://github.com/phyothinzaraung/TM_Events.git
+    cd TM_Events
+    ```  
 
-2. Open the project in Android Studio.
+2. **Open the project in Android Studio:**  
+   - Launch **Android Studio**.  
+   - Click on **"Open"** and select the project directory.  
+   - Wait for Gradle to sync the dependencies.  
 
-3. Sync the project with Gradle files.
+3. **Run the app:**  
+   - Connect an **Android device** or use an **emulator**.  
+   - Click on the **Run** ▶️ button in Android Studio.  
 
-4. Build and run the app on an emulator or physical device.
+4. **Run tests (Unit & UI Tests):**  
+    - To run **unit tests**, execute the following command in the terminal:  
+      ```bash
+      ./gradlew testDebugUnitTest
+      ```  
+    - To run **UI tests**, execute:  
+      ```bash
+      ./gradlew connectedAndroidTest
+      ```  
+
+Now, the project should be up and running! 🚀  
+
