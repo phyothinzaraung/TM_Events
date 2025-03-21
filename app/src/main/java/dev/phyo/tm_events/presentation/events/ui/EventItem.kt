@@ -48,7 +48,7 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 contentDescription = event.name,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .size(140.dp)
+                    .size(160.dp)
                     .clip(RoundedCornerShape(8.dp))
             )
 
@@ -70,19 +70,19 @@ fun EventItem(event: Event, modifier: Modifier = Modifier) {
                 Text(
                     text = event.eventDate,
                     style = MaterialTheme.typography.bodyMedium,
-                    color = Color.Gray
+                    color = Color.DarkGray
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = event.venueName,
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.DarkGray
                 )
                 Spacer(modifier = Modifier.height(2.dp))
                 Text(
                     text = "${event.city}, ${event.stateCode}",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = Color.Gray
+                    style = MaterialTheme.typography.bodyMedium,
+                    color = Color.DarkGray
                 )
             }
         }

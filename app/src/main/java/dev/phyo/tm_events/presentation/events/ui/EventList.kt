@@ -24,8 +24,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import dev.phyo.tm_events.R
 import dev.phyo.tm_events.domain.model.Event
 import dev.phyo.tm_events.presentation.utils.EmptyView
 import dev.phyo.tm_events.presentation.utils.ErrorView
@@ -65,7 +67,7 @@ fun EventList(
                             onCloseSearch = { isSearching = false }
                         )
                     } else {
-                        Text("Simple TM Events List")
+                        Text(stringResource(R.string.toolbar_text))
                     }
                 },
                 actions = {
@@ -75,7 +77,7 @@ fun EventList(
                     }) {
                         Icon(
                             imageVector = if (isSearching || searchQuery.isNotEmpty()) Icons.Default.Close else Icons.Default.Search,
-                            contentDescription = if (isSearching) "Close Search" else "Search"
+                            contentDescription = if (isSearching) stringResource(R.string.close_search_text) else stringResource(R.string.search_text)
                         )
                     }
                 }
@@ -94,7 +96,7 @@ fun EventList(
                 eventList.loadState.refresh is LoadState.Error -> {
                     val error = (eventList.loadState.refresh as LoadState.Error).error
                     ErrorView(
-                        errorMessage = error.localizedMessage ?: "An error occurred",
+                        errorMessage = error.localizedMessage ?: stringResource(R.string.error_default_message),
                     )
                 }
 
@@ -124,7 +126,7 @@ fun EventList(
                                 loadState.append is LoadState.Error -> {
                                     item {
                                         val appendError = (loadState.append as LoadState.Error).error
-                                        ErrorView(errorMessage = appendError.localizedMessage ?: "An error occurred",)
+                                        ErrorView(errorMessage = appendError.localizedMessage ?: stringResource(R.string.error_default_message),)
                                     }
                                 }
                             }

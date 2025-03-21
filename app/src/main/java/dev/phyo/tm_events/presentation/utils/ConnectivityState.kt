@@ -22,7 +22,7 @@ fun rememberConnectivityState(): State<Boolean> {
             }
 
             override fun onAvailable(network: Network) {
-                isConnected.value = checkInternetAccess(connectivityManager) // ✅ Check actual internet access
+                isConnected.value = checkInternetAccess(connectivityManager)
             }
         }
 
@@ -44,5 +44,5 @@ fun checkInternetAccess(connectivityManager: ConnectivityManager?): Boolean {
     val activeNetwork = connectivityManager?.activeNetwork ?: return false
     val capabilities = connectivityManager.getNetworkCapabilities(activeNetwork) ?: return false
 
-    return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED) // ✅ Checks if internet is actually available
+    return capabilities.hasCapability(NetworkCapabilities.NET_CAPABILITY_VALIDATED)
 }

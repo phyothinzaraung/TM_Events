@@ -17,8 +17,10 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
+import dev.phyo.tm_events.R
 
 @Composable
 fun SearchView(
@@ -31,7 +33,7 @@ fun SearchView(
         onValueChange = { newQuery ->
             onSearchQueryChanged(newQuery)
         },
-        placeholder = { Text("Search by name, city or venue", color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
+        placeholder = { Text(stringResource(R.string.search_query_placeholder), color = MaterialTheme.colorScheme.onSurfaceVariant.copy(alpha = 0.6f)) },
         singleLine = true,
         colors = TextFieldDefaults.colors(
             focusedContainerColor = Color.Transparent,
@@ -52,7 +54,7 @@ fun SearchView(
         leadingIcon = {
             Icon(
                 imageVector = Icons.Default.Search,
-                contentDescription = "Search",
+                contentDescription = stringResource(R.string.search_text),
                 tint = MaterialTheme.colorScheme.onSurfaceVariant
             )
         },

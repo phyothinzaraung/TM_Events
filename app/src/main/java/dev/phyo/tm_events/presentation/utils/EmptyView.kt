@@ -10,14 +10,16 @@ import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import dev.phyo.tm_events.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EmptyView(modifier: Modifier = Modifier) {
     Scaffold(topBar = {
-        TopAppBar(title = { Text("Simple TM Events List") })
+        TopAppBar(title = { Text(stringResource(R.string.toolbar_text)) })
     }){ innerPadding ->
         Box(
             modifier = modifier
@@ -26,7 +28,7 @@ fun EmptyView(modifier: Modifier = Modifier) {
             contentAlignment = Alignment.Center
         ) {
             Text(
-                text = "No Data",
+                text = stringResource(R.string.no_data_text),
                 fontSize = 18.sp,
                 modifier = Modifier.padding(16.dp)
             )
