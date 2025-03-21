@@ -4,7 +4,8 @@
     <string name="search_text">Search</string>
     <string name="close_search_text">Close Search</string>
     <string name="error_default_message">An error occurred</string>
-    <string name="no_data_text">No Data</string>
+    <string name="no_data_text">No data available.</string>
+    <string name="refresh_text">Refresh</string>
     <string name="search_query_placeholder">Search by name, city or venue</string>
     <string name="loading_test_tag">loadingIndicator</string>
 
