@@ -1,19 +1,16 @@
 # Android Event App with Clean Architecture and Jetpack Compose
 
-This is an Android application showing alist of events built using **Clean Architecture** and **Jetpack Compose** for UI development. The app retrieves event data from an API and stores it in a local database. Pagination is implemented with **RemoteMediator** to handle large datasets efficiently. The application can also support search functioality by event name, city or venue.
+This is an Android application showing a list of events including concerts, sports, musics and so on. It was built using **Clean Architecture** and **Jetpack Compose** for UI development. The app retrieves event data from an API and stores it in a local database. Pagination is implemented with **RemoteMediator** to handle large datasets efficiently. The application can also support search functioality by event name, city or venue.
 
 ## Table of Contents
 - [Technologies Used](#technologies-used)
 - [Features](#features)
+- [Screenshots](#screenshots)
 - [Architecture](#architecture)
-- [Pagination](#pagination)
-- [Dependency Injection](#dependency-injection)
 - [Testing](#testing)
   - [Unit Testing](#unit-testing)
   - [UI Testing](#ui-testing)
-- [Screenshots](#screenshots)
 - [Getting Started](#getting-started)
-- [License](#license)
 
 ## Technologies Used
 
@@ -39,6 +36,33 @@ This is an Android application showing alist of events built using **Clean Archi
 - Dependency injection with Dagger Hilt for clean and efficient code.
 - Includes unit tests and UI tests to ensure functionality.
 
+## Screenshots
+
+Here are some screenshots of the app:
+
+### Event List Screenshots
+
+<div>
+  <img src="https://github.com/user-attachments/assets/c8e189e0-df0d-49b7-baba-39e302922890" alt="Event_List_Online", width="20%">
+  <img src="https://github.com/user-attachments/assets/98b313f5-6db3-4a13-a2c5-3ed9c2658dc0" alt="Event_List_Offline", width="20%">
+  <img src="https://github.com/user-attachments/assets/ab7514e6-80cc-43a5-9388-c2bf767b54a6" alt="Search_Results", width="20%">
+  <img src="https://github.com/user-attachments/assets/6fc14862-7245-4e1d-966b-943e630fc108" alt="Empty_View", width="20%">
+</div>
+
+### Image Descriptions
+
+1. **Event List Data when Online**  
+   This screenshot shows the event list data when the app is online and successfully fetching data from the server.
+
+2. **Event List Data when Offline**  
+   This screenshot illustrates the event list data available when the app is offline, using previously cached data.
+
+3. **Event List Search Result**  
+   This screenshot shows the result after searching for a specific event in the list.
+
+4. **Event List Empty View**  
+   This screenshot demonstrates the empty view when there are no events available to display.
+
 ## Architecture
 
 This project follows **Clean Architecture** principles, which ensures separation of concerns and easy maintainability. The architecture layers are:
@@ -46,18 +70,6 @@ This project follows **Clean Architecture** principles, which ensures separation
 - **Domain Layer**: Contains the core business logic and entities (e.g., `Event`).
 - **Data Layer**: Handles data sources, repositories, and mappers to transform data between the domain and data models.
 - **Presentation Layer**: Contains UI logic, built with Jetpack Compose.
-
-## Pagination
-
-The app uses **Paging 3** to handle large datasets with efficiency. **RemoteMediator** is used to fetch data from the API and store it in the local database. Pagination is triggered by the user’s interaction with the UI, and new data is fetched as needed.
-
-## Dependency Injection
-
-**Dagger Hilt** is used for dependency injection in this project. It helps to manage and provide the app's dependencies in a clean and efficient manner. With Hilt, we avoid manual object creation and manage dependencies more easily, promoting better testability and scalability.
-
-### How Dagger Hilt is used:
-- Injecting dependencies into classes like `IEventHelperImpl`, `EventDao`, `EventService`, and others.
-- Managing and providing network utilities, database access, and service dependencies.
 
 ## Testing
 
@@ -72,14 +84,6 @@ Unit tests are written using **JUnit** to ensure that the individual components 
 UI tests are written using **Compose Testing APIs** to verify the correctness of the user interface. These tests ensure that the UI behaves as expected and interacts with the underlying components properly.
 
 - UI tests verify that data is displayed correctly, pagination works, and search functionality is functional.
-
-## Screenshots
-
-Here are some screenshots of the app:
-
-<img src="https://github.com/user-attachments/assets/25ec9a83-0f07-4c98-b7a6-f8b94c77b2e7" width="300"/>
-
-_Above: Screenshot showing the event listing UI with pagination._
 
 ## Getting Started
 
