@@ -5,6 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
+import dev.phyo.tm_events.BuildConfig
 import dev.phyo.tm_events.data.remote.service.IEventService
 import dev.phyo.tm_events.util.Constant.Companion.API_KEY
 import okhttp3.OkHttpClient
@@ -34,7 +35,7 @@ object NetworkModule {
                 val originalHttpUrl = original.url
 
                 val newUrl = originalHttpUrl.newBuilder()
-                    .addQueryParameter("apikey", API_KEY)
+                    .addQueryParameter("apikey", BuildConfig.API_KEY)
                     .build()
 
                 val requestBuilder = original.newBuilder().url(newUrl)
@@ -59,7 +60,7 @@ object NetworkModule {
         return Retrofit.Builder()
             .client(client)
             .addConverterFactory(gsonConverterFactory)
-            .baseUrl("https://app.ticketmaster.com/discovery/v2/")
+            .baseUrl(BuildConfig.BASE_URL)
             .build()
     }
 

@@ -1,9 +1,17 @@
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
     alias(libs.plugins.kotlin.compose)
     alias(libs.plugins.dagger.hilt.android)
     alias(libs.plugins.ksp)
+}
+
+val localProperties: File = rootProject.file("local.properties")
+val locPops = Properties()
+localProperties.inputStream().use {
+    locPops.load(it)
 }
 
 android {
@@ -18,6 +26,9 @@ android {
         versionName = "1.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
+
+        buildConfigField("String", "BASE_URL", locPops.getProperty("BASE_URL"))
+        buildConfigField("String", "API_KEY", locPops.getProperty("API_KEY"))
     }
 
     buildTypes {
@@ -38,8 +49,10 @@ android {
     }
     buildFeatures {
         compose = true
+        buildConfig = true
     }
 }
+
 
 dependencies {
 
